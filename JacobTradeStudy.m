@@ -179,7 +179,6 @@ print('DepthFirstTradeStufy','-dpng')
 
 path = shortestpath(graphObject, start_id, goal_id);
 eid = findedge(graphObject, path(1:end-1), path(2:end));
-fprintf('Dijkstra path: %d nodes, %.2f m\n', numel(path), sum(graphObject.Edges.Weight(eid)));
 highlight(plotObject, path, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2);
 
 
