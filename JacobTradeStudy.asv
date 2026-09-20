@@ -5,7 +5,7 @@ clc
 %% Creating Grid
 
 Total_size = 5; % (m) Size of search are
-n = 50; % Total intervals for mapping (Change for more complexity)
+n = 30; % Total intervals for mapping (Change for more complexity)
 x_nodes = n;
 y_nodes = n;
 
@@ -104,9 +104,9 @@ plotObject = plot(graphObject,'XData',x,'YData',y);
 
 % Styling the map
 plotObject.Marker = 'o';
-plotObject.MarkerSize = .5;
+plotObject.MarkerSize = 2;
 plotObject.NodeColor = 'b';
-plotObject.LineWidth = .1;
+plotObject.LineWidth = .5;
 plotObject.EdgeColor = 'k';
 axis equal;
 grid on;
@@ -115,7 +115,7 @@ xlabel('X Position in Search Zone (m)')
 title('Gridded Map of Nodes')
 hold off
 
-%% Depth First Search
+%% Claude Code
 
 % Creating a function that calulates the node number
 pos2id = @(px,py) round(py/Spacing)*Nodes + round(px/Spacing) + 1;
@@ -125,7 +125,7 @@ start_id = pos2id(Start_Position(1), Start_Position(2));
 goal_id  = pos2id(End_Position(1), End_Position(2));
 
 % Creating a wall for a barrier within the path
-[bx, by] = meshgrid(1.5:Spacing:3.5, 0:Spacing:3.5);
+[bx, by] = meshgrid(2.5:Spacing:, 0:Spacing:3.5);
 
 % Finding the node numbers of the barrier
 blocked = pos2id(bx(:), by(:));
@@ -163,7 +163,7 @@ end
 % Highlighting the path
 hold on
 highlight(plotObject, path, 'NodeColor','r', 'EdgeColor','r', 'LineWidth',2);
-highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);
+highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',5);
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g');
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r');
 hold off
