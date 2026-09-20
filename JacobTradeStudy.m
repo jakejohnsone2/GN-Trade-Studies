@@ -131,7 +131,7 @@ goal_id  = pos2id(End_Position(1), End_Position(2));
 % % Finding the node numbers of the barrier
 % blocked = pos2id(bx(:), by(:));
 
-% Randomly generating the 
+% Randomly generating the boundaries
 rng('Default') 
 blocked = randi([1, total_nodes], Obstacle_number,1);
 

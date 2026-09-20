@@ -6,6 +6,11 @@ Total_size = 5; % (m) Size of search are
 n = 30; % Total intervals for mapping (Change for more complexity)
 x_nodes = n;
 y_nodes = n;
+Obstacle_number = 1900;
+
+% Setting the start and end position
+Start_Position = [0,0];
+End_Position = [4.5, 4.2];
 
 % Calculating the vertical and horizontal distance between nodes
 Spacing = Total_size/n;
@@ -97,7 +102,7 @@ plotObject = plot(graphObject,'XData',x,'YData',y);
 
 % Styling the map
 plotObject.Marker = 'o';
-plotObject.MarkerSize = 2;
+plotObject.MarkerSize = .5;
 plotObject.NodeColor = 'b';
 plotObject.LineWidth = .5;
 plotObject.EdgeColor = 'k';
@@ -108,3 +113,28 @@ xlabel('X Position in Search Zone (m)')
 title('Gridded Map of Nodes')
 hold off
 
+%% Creating the Boundaries
+% Creating a function that calulates the node number
+pos2id = @(px,py) round(py/Spacing)*Nodes + round(px/Spacing) + 1;
+
+% Calculating the node number of starting and end position
+start_id = pos2id(Start_Position(1), Start_Position(2));
+goal_id  = pos2id(End_Position(1), End_Position(2));
+
+% Randomly generating the boundaries
+rng('Default') 
+blocked = randi([1, total_nodes], Obstacle_number,1);
+
+% Making sure the start and end aren't treated as obstacles
+blocked(blocked == start_id | blocked == goal_id) = [];
+
+% Finding the index of edges where nodes are blocked
+bad = ismember(s, blocked) | ismember(t, blocked);
+
+% Removing the edges of blocked nodes
+s(bad) = [];  t(bad) = [];  weights(bad) = [];
+
+% Regraphing the nodes and edges
+graphObject = graph(s, t, weights);
+
+highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);

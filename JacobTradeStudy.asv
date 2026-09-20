@@ -131,7 +131,7 @@ goal_id  = pos2id(End_Position(1), End_Position(2));
 % % Finding the node numbers of the barrier
 % blocked = pos2id(bx(:), by(:));
 
-% Randomly generating the 
+% Randomly generating the boundaries
 rng('Default') 
 blocked = randi([1, total_nodes], Obstacle_number,1);
 
@@ -172,14 +172,14 @@ end
 hold on
 highlight(plotObject, path, 'NodeColor','r', 'EdgeColor','r', 'LineWidth',2);
 highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);
-plot
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g');
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r');
 hold off
-legend('','Starting Point','End Point')
 print('DepthFirstTradeStufy','-dpng')
 
 path = shortestpath(graphObject, start_id, goal_id);
 eid = findedge(graphObject, path(1:end-1), path(2:end));
-fprintf('Dijkstra path: %d nodes, %.2f m\n', numel(path), sum(graphObject.Edges.Weight(eid)));
 highlight(plotObject, path, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2);
+
+
+legend('','Starting Point','End Point')
