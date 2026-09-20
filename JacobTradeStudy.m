@@ -135,13 +135,8 @@ goal_id  = pos2id(End_Position(1), End_Position(2));
 rng('Default') 
 blocked = randi([1, total_nodes], Obstacle_number,1);
 
-for i = 1:length(blocked)
-    if blocked(i) == goal_id || blocked(i) == start_id
-        blocked(i) = [];
-    end
-end
-
-
+% Making sure the start and end aren't treated as obstacles
+blocked(blocked == start_id | blocked == goal_id) = [];
 
 % Finding the index of edges where nodes are blocked
 bad = ismember(s, blocked) | ismember(t, blocked);
@@ -180,6 +175,12 @@ highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g');
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r');
 hold off
-legend('','Starting Point','End Point')
 print('DepthFirstTradeStufy','-dpng')
 
+path = shortestpath(graphObject, start_id, goal_id);
+eid = findedge(graphObject, path(1:end-1), path(2:end));
+fprintf('Dijkstra path: %d nodes, %.2f m\n', numel(path), sum(graphObject.Edges.Weight(eid)));
+highlight(plotObject, path, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2);
+
+
+legend('','Starting Point','End Point')
