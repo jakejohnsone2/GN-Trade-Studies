@@ -8,6 +8,7 @@ Total_size = 5; % (m) Size of search are
 n = 50; % Total intervals for mapping (Change for more complexity)
 x_nodes = n;
 y_nodes = n;
+Obstacle_number = 1900;
 
 % Setting the start and end position
 Start_Position = [0,0];
@@ -112,7 +113,7 @@ axis equal;
 grid on;
 ylabel('Y Position in Search Zone (m)')
 xlabel('X Position in Search Zone (m)')
-title('Gridded Map of Nodes')
+title('Depth First Algorithm')
 hold off
 
 %% Depth First Search
@@ -124,11 +125,23 @@ pos2id = @(px,py) round(py/Spacing)*Nodes + round(px/Spacing) + 1;
 start_id = pos2id(Start_Position(1), Start_Position(2));
 goal_id  = pos2id(End_Position(1), End_Position(2));
 
-% Creating a wall for a barrier within the path
-[bx, by] = meshgrid(1.5:Spacing:3.5, 0:Spacing:3.5);
+% % Creating a wall for a barrier within the path
+% [bx, by] = meshgrid(randi([0, 50], 1, 20) / 10, randi([0, 50], 1, 20) / 10);
+% 
+% % Finding the node numbers of the barrier
+% blocked = pos2id(bx(:), by(:));
 
-% Finding the node numbers of the barrier
-blocked = pos2id(bx(:), by(:));
+% Randomly generating the 
+rng('Default') 
+blocked = randi([1, total_nodes], Obstacle_number,1);
+
+for i = 1:length(blocked)
+    if blocked(i) == goal_id || blocked(i) == start_id
+        blocked(i) = [];
+    end
+end
+
+
 
 % Finding the index of edges where nodes are blocked
 bad = ismember(s, blocked) | ismember(t, blocked);
@@ -167,3 +180,6 @@ highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g');
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r');
 hold off
+legend('','Starting Point','End Point')
+print('DepthFirstTradeStufy','-dpng')
+
