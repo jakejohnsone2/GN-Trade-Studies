@@ -137,4 +137,5 @@ s(bad) = [];  t(bad) = [];  weights(bad) = [];
 % Regraphing the nodes and edges
 graphObject = graph(s, t, weights);
 
+% Highlighting the blocked points
 highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2);
