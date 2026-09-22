@@ -105,7 +105,7 @@ hold on
 %% Depth First Search
 
 % Creating a function that calulates the node number
-pos2id = @(px,py) round(px/Spacing)*Nodes + round(py/Spacing) + 1;
+pos2id = @(px,py) round(py/Spacing)*Nodes + round(px/Spacing) + 1;
 
 % Calculating the node number of starting and end position
 start_id = pos2id(Start_Position(1), Start_Position(2));
@@ -180,12 +180,12 @@ highlight(plotObject, path, 'NodeColor','r', 'EdgeColor','r', 'LineWidth',2); % 
 plot(nan, nan, 'Color','r','LineWidth',2)  % Depth First Legend Entry
 highlight(plotObject, path_dijkstra, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2); % Dijkstra
 plot(nan, nan, 'Color','g','LineWidth',2) % Dijkstra Legend Entry
-plot([Start_Position(1) End_Position(1)],[Start_Position(2) End_Position(2)], 'Color','m','LineStyle','--','LineWidth',2) % Straight Line
 highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2); % Blocked Points
 plot(nan, nan, 'MarkerFaceColor','k','MarkerSize',5,'LineStyle','none','Marker','o') % Blocked Points Legend
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g'); % Start Point
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r'); % End Point
 plot(nan, nan, 'Color','b','LineWidth',2) % Possible Path Legend Entry
+
 hold off
 print('DepthFirstTradeStufy','-dpng')
 
@@ -194,4 +194,4 @@ print('DepthFirstTradeStufy','-dpng')
 
 
 
-legend('','Depth First','Dijkstra','Straight Line','Blocked Points','Starting Point','End Point','Possible Path')
+legend('','Depth First','Dijkstra','Blocked Points','Starting Point','End Point','Possible Path',)
