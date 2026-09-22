@@ -2,6 +2,8 @@ clear
 close all
 clc
 
+
+
 %% Creating Grid
 
 Total_size = 5; % (m) Size of search are
@@ -100,7 +102,10 @@ end
 graphObject = graph(s, t, weights);
 hold on
 
-
+pos2id = @(px,py) round(px/Spacing)*Nodes + round(py/Spacing) + 1;
+ 
+start_id = pos2id(Start_Position(1), Start_Position(2));
+goal_id  = pos2id(End_Position(1),   End_Position(2));
 
 %% Depth First Search
 
@@ -171,14 +176,76 @@ title('Depth First Algorithm')
 hold off
 
 % Doing Dijkstra's algorithm
-path_dijkstra = shortestpath(graphObject, start_id, goal_id);
+[path_dijkstra, dijkstra_cost] = shortestpath(graphObject, start_id, goal_id);
 eid_dijkstra = findedge(graphObject, path_dijkstra(1:end-1), path_dijkstra(2:end));
+
+%% A* Search
+h = @(node_id) hypot(x(goal_id) - x(node_id), y(goal_id) - y(node_id)); 
+g_score   = inf(total_nodes, 1);
+f_score   = inf(total_nodes, 1);
+came_from = zeros(total_nodes, 1);
+
+in_open   = false(total_nodes, 1);
+in_closed = false(total_nodes, 1);
+
+g_score(start_id) = 0;
+f_score(start_id) = h(start_id);
+in_open(start_id) = true; 
+
+while any(in_open)
+
+    temp_f = f_score;
+    temp_f(~in_open) = inf;
+    [~,current] = min(temp_f);
+
+    if current == goal_id
+        found = true;
+        break
+    end
+
+    in_open(current) = false;
+    in_closed(current) = true;
+
+    nbrs = neighbors(graphObject, current);
+
+    for k = 1:numel(nbrs)
+        nb = nbrs(k);
+
+        if in_closed(nb)
+            continue
+        end
+
+        eid = findedge(graphObject, current, nb);
+        edge_cost = graphObject.Edges.Weight(eid);
+
+        temp_g = g_score(current) + edge_cost;
+       
+        if temp_g < g_score(nb)
+            came_from(nb) = current;
+            g_score(nb) = temp_g;
+            f_score(nb) = g_score(nb) + h(nb);
+            in_open(nb) = true;
+        end
+    end
+end
+
+path_A = goal_id;
+
+while(path_A(1) ~= start_id)
+    predecessor = came_from(path_A(1));
+    if predecessor == 0
+        error('Failed to reconstruct a valid path.');
+    end
+    path_A = [predecessor; path_A];
+end
+
 
 % Highlighting the paths
 hold on
 highlight(plotObject, path, 'NodeColor','r', 'EdgeColor','r', 'LineWidth',2); % Depth First
 plot(nan, nan, 'Color','r','LineWidth',2)  % Depth First Legend Entry
-highlight(plotObject, path_dijkstra, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2); % Dijkstra
+% highlight(plotObject, path_dijkstra, 'NodeColor','g', 'EdgeColor','g', 'LineWidth',2); % Dijkstra
+plot(x(path_dijkstra), y(path_dijkstra), 'g-',  'LineWidth', 3);
 plot(nan, nan, 'Color','g','LineWidth',2) % Dijkstra Legend Entry
 plot([Start_Position(1) End_Position(1)],[Start_Position(2) End_Position(2)], 'Color','m','LineStyle','--','LineWidth',2) % Straight Line
 highlight(plotObject, blocked, 'NodeColor','k', 'MarkerSize',2); % Blocked Points
@@ -186,12 +253,14 @@ plot(nan, nan, 'MarkerFaceColor','k','MarkerSize',5,'LineStyle','none','Marker',
 plot(x(start_id), y(start_id), 'gs', 'MarkerSize',10, 'MarkerFaceColor','g'); % Start Point
 plot(x(goal_id),  y(goal_id),  'rp', 'MarkerSize',12, 'MarkerFaceColor','r'); % End Point
 plot(nan, nan, 'Color','b','LineWidth',2) % Possible Path Legend Entry
+% highlight(plotObject, path_A, 'NodeColor','cyan', 'EdgeColor','cyan', 'LineWidth',2,'LineStyle','--'); % A*
+plot(x(path_A),        y(path_A),        'c--', 'LineWidth', 2);
 hold off
 print('DepthFirstTradeStufy','-dpng')
 
-
-
-
-
+% plot(x(path_dijkstra), y(path_dijkstra), 'g-',  'LineWidth', 3);
+plot(x(path_A),        y(path_A),        'c--', 'LineWidth', 2);
+fprintf('Path cost:          %.6f m\n', g_score(goal_id));
+fprintf('Dijkstra cost:      %.6f m\n', dijkstra_cost);
 
 legend('','Depth First','Dijkstra','Straight Line','Blocked Points','Starting Point','End Point','Possible Path')
