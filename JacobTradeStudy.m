@@ -5,10 +5,10 @@ clc
 %% Creating Grid
 
 Total_size = 5; % (m) Size of search are
-n = 20; % Total intervals for mapping (Change for more complexity)
+n = 50; % Total intervals for mapping (Change for more complexity)
 x_nodes = n;
 y_nodes = n;
-Obstacle_number = 100;
+Obstacle_number = 1900;
 
 % Setting the start and end position
 Start_Position = [0,0];
@@ -100,21 +100,7 @@ end
 graphObject = graph(s, t, weights);
 hold on
 
-% Plotting the map
-plotObject = plot(graphObject,'XData',x,'YData',y);
 
-% Styling the map
-plotObject.Marker = 'o';
-plotObject.MarkerSize = .5;
-plotObject.NodeColor = 'b';
-plotObject.LineWidth = .1;
-plotObject.EdgeColor = 'k';
-axis equal;
-grid on;
-ylabel('Y Position in Search Zone (m)')
-xlabel('X Position in Search Zone (m)')
-title('Depth First Algorithm')
-hold off
 
 %% Depth First Search
 
@@ -167,6 +153,23 @@ path = goal_id;
 while path(1) ~= start_id
     path = [parent(path(1)); path];
 end
+
+% Plotting the map
+plotObject = plot(graphObject,'XData',x,'YData',y);
+
+% Styling the map
+plotObject.Marker = 'o';
+plotObject.MarkerSize = .5;
+plotObject.NodeColor = 'b';
+plotObject.LineWidth = .1;
+plotObject.EdgeColor = 'k';
+axis equal;
+grid on;
+ylabel('Y Position in Search Zone (m)')
+xlabel('X Position in Search Zone (m)')
+title('Depth First Algorithm')
+hold off
+
 
 % Highlighting the path
 hold on
