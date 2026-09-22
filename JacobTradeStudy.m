@@ -5,10 +5,10 @@ clc
 %% Creating Grid
 
 Total_size = 5; % (m) Size of search are
-n = 50; % Total intervals for mapping (Change for more complexity)
+n = 20; % Total intervals for mapping (Change for more complexity)
 x_nodes = n;
 y_nodes = n;
-Obstacle_number = 1900;
+Obstacle_number = 100;
 
 % Setting the start and end position
 Start_Position = [0,0];
