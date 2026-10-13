@@ -264,3 +264,5 @@ fprintf('Path cost:          %.6f m\n', g_score(goal_id));
 fprintf('Dijkstra cost:      %.6f m\n', dijkstra_cost);
 
 legend('','Depth First','Dijkstra','Straight Line','Blocked Points','Starting Point','End Point','Possible Path')
+
+
