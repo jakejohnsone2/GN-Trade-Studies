@@ -1,0 +1,32 @@
+clear
+clc
+close all
+
+x = 0:.01:5;
+y = 0:.01:5;
+
+Assumed_max_speed = 2;
+Line_Dist = 5*sqrt(2);
+Assumed_time = Line_Dist/Assumed_max_speed*2;
+Maximum_dist = .3;
+Mean_Accel = Assumed_max_speed/(.5*Assumed_time);
+
+Max_angle = atand(Maximum_dist/Line_Dist);
+Max_accel = 4*(Line_Dist+Maximum_dist)/Assumed_time^2;
+
+Accel_Error = Max_accel-Mean_Accel;
+Angle_Error = Max_angle;
+
+
+Accel_STD = Accel_Error/2;
+Angle_STD = Angle_Error/2;
+
+Angle_Dist = Angle_STD*randn(30000,1);
+Accel_Dist = Mean_Accel+Accel_STD*randn(30000,1);
+
+Distance_trav = Accel_Dist.*(Assumed_time^2/4);
+x_location = Distance_trav.*cosd(Angle_STD);
+y_location = Distance_trav.*sind(Angle_STD);
+
+
+
