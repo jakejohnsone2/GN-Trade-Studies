@@ -295,5 +295,6 @@ yline(6,'Color','r','LineWidth',2,'LineStyle','--','Label','Fully Observable Sys
 set(gca, 'XTickLabel', sensorLabels);
 ylim([0 8])
 ylabel('Observable States')
+xlabel('Sensors')
 title('Sensors vs Observable States')
 print('Observable_States','-dpng')
