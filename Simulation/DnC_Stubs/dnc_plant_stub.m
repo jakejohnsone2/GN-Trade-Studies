@@ -1,6 +1,6 @@
 function x = dnc_plant_stub(x, u, dt, p)
 %DNC_PLANT_STUB Stand-in plant: unicycle with first-order speed response.
-%   Owner: D&C (IF-DC.2). Replace with the real dynamics model.
+%   Owner: D&C. Replace with the real dynamics model.
 %
 %   x : [x; y; theta; v; omega]   u : [v_cmd; omega_cmd]
 %   The speed lag is what makes the rover overshoot the stop, so e_stop is

@@ -45,7 +45,7 @@ e_nav    = true - what controller saw  G&N, 6 cm
 ```
 
 `p.sim.feedback = 'truth'` feeds the controller the true pose (perfect
-knowledge, IF-DC.1). `'estimate'` feeds it `x_hat` (closed loop, GN.0).
+knowledge, D&C alloc). `'estimate'` feeds it `x_hat` (closed loop, 3.2.3.2).
 `run_monte_carlo` runs every seed both ways; the difference is the coupling.
 
 ## Swapping in a block

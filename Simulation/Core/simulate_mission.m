@@ -4,7 +4,7 @@ function res = simulate_mission(p, blocks)
 %
 %   Loop each step:  controller -> plant -> sensors -> estimator.
 %   p.sim.feedback chooses what the controller sees: 'estimate' (x_hat, the
-%   real closed loop, GN.0) or 'truth' (perfect knowledge, IF-DC.1). Same
+%   real closed loop, 3.2.3.2) or 'truth' (perfect knowledge, D&C alloc). Same
 %   seed, both modes: the difference is the estimator/controller coupling.
 
 rng(p.sim.seed);

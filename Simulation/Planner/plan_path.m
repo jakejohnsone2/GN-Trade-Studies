@@ -5,7 +5,7 @@ function path = plan_path(map, start_xy, goal_xy, p)
 %   path.wp          Nx2 waypoints (m). wp(1,:) is the start, wp(end,:) is
 %                    the exact goal (not a grid node), so planning adds no
 %                    error at the stop.
-%   path.final_ok    true if the last leg is at least p.guid.L_f long (GN.3).
+%   path.final_ok    true if the last leg is at least p.guid.L_f long (3.2.1.1).
 %
 %   Legs are straight; the controller pivots in place at each waypoint.
 
@@ -61,7 +61,7 @@ path.wp       = wp;
 path.final_ok = norm(wp(end,:) - wp(end-1,:)) >= p.guid.L_f;
 if ~path.final_ok
     warning('plan_path:finalLeg', ...
-        'Final leg is %.2f m, shorter than L_f = %.2f m (GN.3).', ...
+        'Final leg is %.2f m, shorter than L_f = %.2f m (3.2.1.1).', ...
         norm(wp(end,:) - wp(end-1,:)), p.guid.L_f);
 end
 end

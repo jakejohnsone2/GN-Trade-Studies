@@ -12,7 +12,7 @@ function err = compute_errors(m_true, goal, fb_final, true_final, hat_final)
 err.e_marker = goal - m_true;
 err.e_stop   = fb_final - goal;
 err.e_nav    = true_final - fb_final;
-err.rover    = true_final - goal;           % GN.0: rover's own share
-err.total    = true_final - m_true;         % SYS.4
-err.est      = true_final - hat_final;      % GN.1
+err.rover    = true_final - goal;           % 3.2.3.2: rover's own share
+err.total    = true_final - m_true;         % 3.2
+err.est      = true_final - hat_final;      % 3.2.2.4
 end

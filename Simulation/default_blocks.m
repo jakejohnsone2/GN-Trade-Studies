@@ -9,7 +9,7 @@ function blocks = default_blocks()
 %     sensors    z                = f(pose_true, pose_prev, k, dt, p)
 %     estimator  [x_hat, P]       = f(x_hat, P, z, dt, p)
 %
-%   D&C blocks (stand-ins until IF-DC.2 is delivered)
+%   D&C blocks (stand-ins until D&C delivers their model)
 %     plant_init x                = f(start_pose, p)
 %     plant      x                = f(x, u, dt, p)
 %     controller [u, cstate]      = f(x_fb, path, cstate, p)

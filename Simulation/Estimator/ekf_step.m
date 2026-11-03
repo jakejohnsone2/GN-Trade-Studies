@@ -1,10 +1,10 @@
 function [x_hat, P] = ekf_step(x_hat, P, z, dt, p)
-%EKF_STEP Stand-in EKF on [x; y; theta] (GN.1).
+%EKF_STEP Stand-in EKF on [x; y; theta] (3.2.2).
 %   Owner: Estimator. Predicts from measured odometry (encoders + gyro),
 %   not from the commanded u, so it never needs the D&C plant model.
 %   Corrects with RTK position and magnetometer heading when available.
 %
-%   TODO (GN.1b): model RTK latency and check update rate against the
+%   TODO (3.2.2.1): model RTK latency and check update rate against the
 %   controller once D&C's model is in.
 
 %% Predict from odometry

@@ -1,6 +1,6 @@
 function [u, cstate] = dnc_controller_stub(x_fb, path, cstate, p)
 %DNC_CONTROLLER_STUB Stand-in stop-and-pivot controller.
-%   Owner: D&C (IF-DC.2). Replace with the real controller.
+%   Owner: D&C. Replace with the real controller.
 %
 %   x_fb   : pose the controller is allowed to see, [x; y; theta]. This is
 %            x_hat or the true pose, set by p.sim.feedback.
@@ -10,7 +10,7 @@ function [u, cstate] = dnc_controller_stub(x_fb, path, cstate, p)
 %
 %   At each waypoint: pivot in place to the next leg's heading, then drive
 %   the leg straight. The final leg ramps speed down to p.guid.v_f and
-%   commands a stop at the goal (GN.3 standard final approach).
+%   commands a stop at the goal (3.2.1.1 standard final approach).
 
 if isempty(cstate)
     cstate = struct('idx', 2, 'mode', 'pivot', 'done', false);

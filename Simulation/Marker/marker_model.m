@@ -1,5 +1,5 @@
 function [m_est, Sigma] = marker_model(m_true, p)
-%MARKER_MODEL Marker position as the UAS reports it (GN.2a, IF-UAS.1).
+%MARKER_MODEL Marker position as the UAS reports it (UAS alloc, 4.1).
 %   m_true : true marker position [x, y] (m)
 %   m_est  : reported marker position, 2x1 (m)
 %   Sigma  : reported 2x2 covariance (m^2)
