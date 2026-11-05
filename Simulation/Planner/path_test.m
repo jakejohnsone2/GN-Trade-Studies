@@ -10,12 +10,34 @@ addpath(genpath(sim_dir));
 % Load the same map, clearance, and final-leg requirement used by missions.
 p = params();
 
+% Ask for custom circular obstacles using the project's [x y radius] format.
+% This test replaces the default obstacle list. Enter 0 to test an empty map.
+nObs = input('Number of circular obstacles to add (0 for none): ');
+if ~isscalar(nObs) || ~isfinite(nObs) || nObs < 0 || nObs ~= fix(nObs)
+    error('path_test:obstacleCount', 'Obstacle count must be a nonnegative integer.');
+end
+custom_obstacles = zeros(nObs,3);
+for obstacle_i = 1:nObs
+    fprintf('Obstacle %d of %d (coordinates in meters)\n',obstacle_i,nObs);
+    cx = input('  Center East/x: ');
+    cy = input('  Center North/y: ');
+    radius = input('  Radius: ');
+    if ~isscalar(cx) || ~isscalar(cy) || ~isscalar(radius) || ...
+            any(~isfinite([cx cy radius])) || radius <= 0 || ...
+            cx < 0 || cx > p.map.size || cy < 0 || cy > p.map.size
+        error('path_test:obstacleData', ...
+            'Centers must be inside the map and radius must be positive.');
+    end
+    custom_obstacles(obstacle_i,:) = [cx cy radius];
+end
+p.map.obstacles = custom_obstacles;
+
 % Each row defines one named test scenario and its [x y] start and goal.
 % The last case crosses the obstacle field to exercise route-around behavior.
 cases = {
     'Default route',       p.map.start(1:2), p.marker.true_pos;
     'Near map edge',       [0.10 4.80],     [4.80 0.10];
-    'Across obstacle field',[0.50 2.50],    [4.50 2.50]
+    'Across obstacle field',[0.50 2.50],    [4.55 2.50]
 };
 
 % Give every scenario its own axes so the paths can be compared side by side.
