@@ -10,27 +10,30 @@ addpath(genpath(sim_dir));
 % Load the same map, clearance, and final-leg requirement used by missions.
 p = params();
 
-% Ask for custom circular obstacles using the project's [x y radius] format.
-% This test replaces the default obstacle list. Enter 0 to test an empty map.
-nObs = input('Number of circular obstacles to add (0 for none): ');
-if ~isscalar(nObs) || ~isfinite(nObs) || nObs < 0 || nObs ~= fix(nObs)
-    error('path_test:obstacleCount', 'Obstacle count must be a nonnegative integer.');
+% Choose the obstacle source. -1 keeps params() defaults, 0 uses no
+% obstacles, and a positive count prompts for custom [x y radius] rows.
+nObs = input('Obstacle count (-1 = defaults, 0 = none, positive = custom): ');
+if ~isscalar(nObs) || ~isfinite(nObs) || nObs < -1 || nObs ~= fix(nObs)
+    error('path_test:obstacleCount', ...
+        'Obstacle count must be -1 or a nonnegative integer.');
 end
-custom_obstacles = zeros(nObs,3);
-for obstacle_i = 1:nObs
-    fprintf('Obstacle %d of %d (coordinates in meters)\n',obstacle_i,nObs);
-    cx = input('  Center East/x: ');
-    cy = input('  Center North/y: ');
-    radius = input('  Radius: ');
-    if ~isscalar(cx) || ~isscalar(cy) || ~isscalar(radius) || ...
-            any(~isfinite([cx cy radius])) || radius <= 0 || ...
-            cx < 0 || cx > p.map.size || cy < 0 || cy > p.map.size
-        error('path_test:obstacleData', ...
-            'Centers must be inside the map and radius must be positive.');
+if nObs >= 0
+    custom_obstacles = zeros(nObs,3);
+    for obstacle_i = 1:nObs
+        fprintf('Obstacle %d of %d (coordinates in meters)\n',obstacle_i,nObs);
+        cx = input('  Center East/x: ');
+        cy = input('  Center North/y: ');
+        radius = input('  Radius: ');
+        if ~isscalar(cx) || ~isscalar(cy) || ~isscalar(radius) || ...
+                any(~isfinite([cx cy radius])) || radius <= 0 || ...
+                cx < 0 || cx > p.map.size || cy < 0 || cy > p.map.size
+            error('path_test:obstacleData', ...
+                'Centers must be inside the map and radius must be positive.');
+        end
+        custom_obstacles(obstacle_i,:) = [cx cy radius];
     end
-    custom_obstacles(obstacle_i,:) = [cx cy radius];
+    p.map.obstacles = custom_obstacles;
 end
-p.map.obstacles = custom_obstacles;
 
 % Each row defines one named test scenario and its [x y] start and goal.
 % The last case crosses the obstacle field to exercise route-around behavior.
