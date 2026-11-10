@@ -1,5 +1,5 @@
 function p = params()
-%PARAMS Single source of truth for every number in the G&N simulation.
+% PARAMS Single source of truth for every number in the G&N simulation.
 %   Requirement IDs (e.g. 3.2.3.2) refer to the Rover Requirements Tree.
 %   "UAS alloc" and "D&C alloc" are budget splits with no tree ID yet.
 %   Change numbers here, never inside a block.
@@ -33,14 +33,14 @@ p.map.obstacles    = [1.5 1.2 0.30;         % (m) [x y radius] per row
 p.map.grid_spacing = 0.05;                  % (m) planner grid
 p.map.clearance    = p.rover.half_width + 0.10;  % (m) TBD; must cover the 3.2.1.3 20 cm corridor
 
-%% ============================ Marker (2, 4.1) ===========================
+%% Marker Config (2, 4.1)
 p.marker.true_pos   = [4.5, 4.2];   % (m) where the marker really is
 p.marker.bound      = 0.15;         % (m) UAS hard bound on marker error
 p.marker.mode       = 'gaussian';   % 'gaussian', 'worst_ring' or 'uniform'
 p.marker.sigma      = p.marker.bound / 2.45;  % (m) per axis, 95% at the bound
 p.marker.ring_angle = 0;            % (rad) offset direction for 'worst_ring'
 
-%% ============================ Guidance (3.2.1.1, 3.2.3.1) ===============
+%% Guidance Config (3.2.1.1, 3.2.3.1)
 p.guid.L_f        = 0.50;        % (m) minimum straight final approach
 p.guid.v_f        = 0.10;        % (m/s) speed at the goal on final approach
 p.guid.v_min      = 0.05;        % (m/s) slowest commanded speed while driving
@@ -48,7 +48,7 @@ p.guid.pivot_tol  = deg2rad(2);  % (rad) heading error to end a pivot
 p.guid.k_heading  = 2.0;         % (1/s) heading gain while driving
 p.guid.k_cross    = 4.0;         % (1/m) cross-track gain while driving
 
-%% ============================ Sensors (trade study) =====================
+%% Sensors Config
 % Placeholder values until the sensor trade picks hardware.
 p.sens.rtk_rate    = 10;            % (Hz) RTK position fix rate
 p.sens.sigma_rtk   = 0.015;         % (m) RTK fixed, 1 sigma per axis
@@ -56,6 +56,15 @@ p.sens.mag_rate    = 10;            % (Hz) magnetometer heading rate
 p.sens.sigma_mag   = deg2rad(3);    % (rad) heading, 1 sigma
 p.sens.sigma_v     = 0.01;          % (m/s) encoder speed noise, 1 sigma
 p.sens.sigma_w     = deg2rad(1);    % (rad/s) gyro rate noise, 1 sigma
+
+%% Scripted Trajectory Config (localization studies only)
+% Used by scripted_trajectory / simulate_localization, never by the mission.
+p.traj.v        = 0.30;         % (m/s) cruise speed, 1.3 nominal
+p.traj.w_pivot  = 0.50;         % (rad/s) pivot-in-place rate
+p.traj.side     = 3.0;          % (m) 'square' leg length
+p.traj.radius   = 1.0;          % (m) 'arc' / 'figure8' radius
+p.traj.t_hold   = 60;           % (s) 'stationary' duration
+p.traj.t_settle = 5;            % (s) rest at the end of every trajectory
 
 %% ============================ Estimator (3.2.2) =========================
 p.est.P0 = diag([0.02^2, 0.02^2, deg2rad(5)^2]);   % initial covariance

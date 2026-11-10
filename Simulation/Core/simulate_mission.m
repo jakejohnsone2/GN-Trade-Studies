@@ -1,5 +1,5 @@
 function res = simulate_mission(p, blocks)
-%SIMULATE_MISSION Run one start-to-marker mission through every block.
+%   SIMULATE_MISSION Run one start-to-marker mission through every block.
 %   res = simulate_mission(params(), default_blocks())
 %
 %   Loop each step:  controller -> plant -> sensors -> estimator.
@@ -7,7 +7,10 @@ function res = simulate_mission(p, blocks)
 %   real closed loop, 3.2.3.2) or 'truth' (perfect knowledge, D&C alloc). Same
 %   seed, both modes: the difference is the estimator/controller coupling.
 
+% Decides whether to use random seed or pre selected seed
 rng(p.sim.seed);
+
+% Simulation Loop Rate
 dt = p.sim.dt;
 
 %% Mission setup
@@ -36,7 +39,12 @@ while k < n_max
     k = k + 1;
     pose_prev = x_true(1:3);
 
-    if use_truth, x_fb = x_true(1:3); else, x_fb = x_hat; end
+    if use_truth
+        x_fb = x_true(1:3);
+    else 
+        x_fb = x_hat;
+    end
+
     [u, cstate] = blocks.controller(x_fb, path, cstate, p);
     x_true      = blocks.plant(x_true, u, dt, p);
     z           = blocks.sensors(x_true(1:3), pose_prev, k, dt, p);

@@ -1,5 +1,5 @@
 function z = sensor_suite(pose, pose_prev, k, dt, p)
-%SENSOR_SUITE Stand-in sensors: wheel encoders, gyro, RTK GPS, magnetometer.
+% SENSOR_SUITE Stand-in sensors: wheel encoders, gyro, RTK GPS, magnetometer.
 %   Owner: Sensors. Noise values are placeholders until the trade study
 %   picks hardware. No cameras (excluded from autonomous travel).
 %
@@ -25,7 +25,7 @@ if mod(k, round(1 / (p.sens.rtk_rate * dt))) == 0
 end
 
 z.mag = [];
-if mod(k, round(1 / (p.sens.mag_rate * dt))) == 0
-    z.mag = wrap_pi(pose(3) + p.sens.sigma_mag * randn);
-end
+    if mod(k, round(1 / (p.sens.mag_rate * dt))) == 0
+        z.mag = wrap_pi(pose(3) + p.sens.sigma_mag * randn);
+    end
 end
